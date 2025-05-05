@@ -1,0 +1,24 @@
+# scripts/notifications.yaml
+
+- id: send_notification
+  parameters:
+    titre: string
+    msg: string
+  then:
+    - homeassistant.service:
+        service: persistent_notification.create
+        data:
+          title: !lambda 'return titre;'
+        data_template:
+          message: !lambda 'return msg;'
+
+- id: send_notification_push
+  parameters:
+    titre: string
+    msg: string
+  then:
+    - homeassistant.service:
+        service: !secret notify_device
+        data:
+          title: !lambda 'return titre;'
+          message: !lambda 'return msg;'

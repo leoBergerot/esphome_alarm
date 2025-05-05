@@ -1,0 +1,7 @@
+# switches.yaml
+
+- platform: output
+  id: siren_alarme
+  name: "Sirène Alarme"
+  output: siren_output
+  restore_mode: ALWAYS_ON

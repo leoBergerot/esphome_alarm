@@ -1,0 +1,9 @@
+# outputs.yaml
+
+- platform: gpio
+  id: siren_output
+  pin:
+    mcp23xxx: mcp23017_hub
+    number: 2
+    mode: OUTPUT
+    inverted: true

@@ -1,0 +1,15 @@
+# scripts/check.yaml
+
+- id: check_opened
+  mode: restart
+  then:
+    - lambda: |-
+        std::string message = "";
+        if (id(room_window).state) {
+          message += "Fenêtre chambre ouverte. ";
+        }
+        if (message != "") {
+          ESP_LOGW("alarm", "⚠️ %s", message.c_str());
+          id(send_notification).execute("⚠️ Alarme - Ouvertures détectées", message);
+          id(send_notification_push).execute("⚠️ Alarme - Ouvertures détectées", message);
+        }  

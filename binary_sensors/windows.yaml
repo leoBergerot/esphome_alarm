@@ -1,0 +1,16 @@
+# binary_sensors/windows.yaml
+
+- platform: gpio
+  name: "Fenêtre chambre"
+  id: room_window
+  device_class: door
+  pin:
+    mcp23xxx: mcp23017_hub
+    number: 0
+    mode:
+      input: true
+      pullup: true
+  on_press:
+    then:
+      - script.execute: check_trigger_alarme_away
+      - script.execute: check_trigger_alarme_night
