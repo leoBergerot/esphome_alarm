@@ -28,6 +28,7 @@ Requires the ESPHome CLI and a connected ESP32 (USB or via CH340 serial adapter)
 
 ## Project Structure
 
+```
 main.yaml                  # Main entry point
 secrets.yaml              # Contains alarm_code, notify target, etc. (gitignored)
 alarm.yaml                # Alarm logic (template platform)
@@ -40,6 +41,7 @@ scripts/
 binary_sensors/
   ├── pir.yaml              # Motion and sabotage sensors
   └── windows.yaml          # Window contact sensors
+```
 
 ## Example secrets.yaml
 
