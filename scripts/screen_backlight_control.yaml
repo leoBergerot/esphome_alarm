@@ -1,0 +1,12 @@
+- id: turn_on_screen
+  then:
+    - lambda: |-
+        id(lcd_screen).backlight();
+    - script.execute: screen_sleep_timer
+
+- id: screen_sleep_timer
+  mode: restart
+  then:
+    - delay: 30s
+    - lambda: |-
+        id(lcd_screen).no_backlight();

@@ -1,0 +1,7 @@
+# display.yaml
+
+- platform: lcd_pcf8574
+  dimensions: 16x2
+  address: 0x27
+  id: lcd_screen
+  update_interval: never

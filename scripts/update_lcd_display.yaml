@@ -1,0 +1,13 @@
+# scripts/update_lcd_display.yaml
+
+- id: update_lcd_display
+  mode: restart
+  parameters:
+    title: string
+  then:
+    - lambda: |-
+        id(lcd_screen).clear();
+        id(lcd_screen).print(0, 0, "Alarme:");
+        id(lcd_screen).print(0, 1, title);
+        id(lcd_screen).display();
+

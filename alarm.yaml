@@ -2,27 +2,50 @@
 
 - platform: template
   name: !secret alarm_name
-  id: alarme_maison
+  id: home_alarm
   codes:
     - !secret alarm_code
   arming_away_time: 5s
   arming_night_time: 5s
+
   on_armed_away:
     then:
-      - logger.log: "Alarme armée en mode away"
+      - script.execute: turn_on_screen
+      - script.execute:
+          id: update_lcd_display
+          title: "Mode absent"
+
   on_armed_night:
     then:
-      - logger.log: "Alarme armée en mode night"
+      - script.execute: turn_on_screen
+      - script.execute:
+          id: update_lcd_display
+          title: "Mode nuit"
+
   on_arming:
     then:
+      - script.execute: turn_on_screen
       - script.execute: check_opened
+      - script.execute:
+          id: update_lcd_display
+          title: "Armement..."
+
   on_triggered:
     then:
       - switch.turn_off: siren_alarme
+      - script.execute: turn_on_screen
+      - script.execute:
+          id: update_lcd_display
+          title: "Detection"
       - script.execute:
           id: send_notification_push
           titre: "🚨 Alarme TRIGGERED"
           msg: "Un capteur a déclenché l'alarme dans la maison !"
+
   on_disarmed:
     then:
       - switch.turn_on: siren_alarme
+      - script.execute: turn_on_screen
+      - script.execute:
+          id: update_lcd_display
+          title: "Desactivee"

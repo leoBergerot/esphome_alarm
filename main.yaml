@@ -1,6 +1,14 @@
 # main.yaml (main file)
 esphome:
   name: alarm-esp32-eth
+  on_boot:
+    priority: -100
+    then:
+      - script.execute: turn_on_screen
+      - delay: 1s
+      - script.execute:
+          id: update_lcd_display
+          title: "Desactivee"
 
 esp32:
   board: esp-wrover-kit
@@ -32,3 +40,4 @@ switch: !include switches.yaml
 alarm_control_panel: !include alarm.yaml
 script: !include_dir_merge_list scripts/
 binary_sensor: !include_dir_merge_list binary_sensors/
+display: !include display.yaml

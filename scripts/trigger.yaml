@@ -5,29 +5,29 @@
   then:
     - if:
         condition:
-          lambda: 'return id(alarme_maison).get_state() == alarm_control_panel::ACP_STATE_ARMED_AWAY;'
+          lambda: 'return id(home_alarm).get_state() == alarm_control_panel::ACP_STATE_ARMED_AWAY;'
         then:
           - delay: 30s
           - if:
               condition:
-                lambda: 'return id(alarme_maison).get_state() == alarm_control_panel::ACP_STATE_ARMED_AWAY;'
+                lambda: 'return id(home_alarm).get_state() == alarm_control_panel::ACP_STATE_ARMED_AWAY;'
               then:
-                - lambda: 'id(alarme_maison).publish_state(alarm_control_panel::ACP_STATE_TRIGGERED);'
+                - lambda: 'id(home_alarm).publish_state(alarm_control_panel::ACP_STATE_TRIGGERED);'
 
 - id: check_trigger_alarme_away
   mode: restart
   then:
     - if:
         condition:
-          lambda: 'return id(alarme_maison).get_state() == alarm_control_panel::ACP_STATE_ARMED_AWAY;'
+          lambda: 'return id(home_alarm).get_state() == alarm_control_panel::ACP_STATE_ARMED_AWAY;'
         then:
-          - lambda: 'id(alarme_maison).publish_state(alarm_control_panel::ACP_STATE_TRIGGERED);'
+          - lambda: 'id(home_alarm).publish_state(alarm_control_panel::ACP_STATE_TRIGGERED);'
 
 - id: check_trigger_alarme_night
   mode: restart
   then:
     - if:
         condition:
-          lambda: 'return id(alarme_maison).get_state() == alarm_control_panel::ACP_STATE_ARMED_NIGHT;'
+          lambda: 'return id(home_alarm).get_state() == alarm_control_panel::ACP_STATE_ARMED_NIGHT;'
         then:
-          - lambda: 'id(alarme_maison).publish_state(alarm_control_panel::ACP_STATE_TRIGGERED);'
+          - lambda: 'id(home_alarm).publish_state(alarm_control_panel::ACP_STATE_TRIGGERED);'
