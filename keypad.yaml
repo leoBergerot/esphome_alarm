@@ -1,0 +1,91 @@
+# keypad.yaml
+
+- id: keypad_alarme
+  columns:
+    - pin:
+        mcp23xxx: mcp23017_hub_1
+        number: 0
+    - pin:
+        mcp23xxx: mcp23017_hub_1
+        number: 1
+    - pin:
+        mcp23xxx: mcp23017_hub_1
+        number: 2
+    - pin:
+        mcp23xxx: mcp23017_hub_1
+        number: 3
+  rows:
+    - pin:
+        mcp23xxx: mcp23017_hub_1
+        number: 4
+    - pin:
+        mcp23xxx: mcp23017_hub_1
+        number: 5
+    - pin:
+        mcp23xxx: mcp23017_hub_1
+        number: 6
+    - pin:
+        mcp23xxx: mcp23017_hub_1
+        number: 7
+  keys: "123A456B789C*0#D"
+  on_key:
+    then:
+      - lambda: |-
+          id(turn_on_screen).execute();
+          static std::string input = "";
+          char key = x;
+
+          auto show_message = [](const std::string &line1, const std::string &line2) {
+            if (id(lcd_screen).is_failed()) {
+              ESP_LOGW("alarm", "No LCD screen");
+              return;
+            }
+            id(lcd_scroll_line).stop();
+            id(lcd_screen).clear();
+            id(lcd_screen).print(0, 0, line1.c_str());
+            id(lcd_screen).print(0, 1, line2.c_str());
+            id(lcd_screen).display();
+          };
+
+          if (key >= '0' && key <= '9') {
+            input += key;
+            show_message("Code:", std::string(input.length(), '*'));
+            id(reset_display_state).execute();
+          } else if (key == '*') {
+            if (!input.empty()) {
+              input.pop_back();
+              show_message("Code:", std::string(input.length(), '*'));
+            }
+          } else if (key == 'A' || key == 'B' || key == 'C') {
+            if (input == "${alarm_code}") {
+              auto state = id(home_alarm).get_state();
+              if (key == 'A') {
+                if (state == alarm_control_panel::ACP_STATE_DISARMED) {
+                  id(home_alarm).arm_away();
+                } else if (state == alarm_control_panel::ACP_STATE_ARMED_NIGHT) {
+                  id(lcd_scroll_line).execute("Deja activee:", "Mode nuit, desarmez pour mode absent");
+                } else {
+                  show_message("Deja activee", "Mode absent");
+                }
+              } else if (key == 'B') {
+                if (state == alarm_control_panel::ACP_STATE_DISARMED) {
+                  id(home_alarm).arm_night();
+                } else if (state == alarm_control_panel::ACP_STATE_ARMED_AWAY) {
+                  id(lcd_scroll_line).execute("Deja activee:", "Mode absent, desarmez pour mode nuit");
+                } else {
+                  show_message("Deja activee", "Mode nuit");
+                }
+              } else if (key == 'C') {
+                if (state != alarm_control_panel::ACP_STATE_DISARMED) {
+                  id(home_alarm).disarm(input);
+                } else {
+                  show_message("Deja desactivee", "");
+                }
+              }
+            } else {
+              show_message("Code invalide", "");
+            }
+            
+            id(reset_display_state).execute();
+            input.clear();
+          }

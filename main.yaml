@@ -10,6 +10,9 @@ esphome:
           id: update_lcd_display
           title: "Desactivee"
 
+substitutions:
+  alarm_code: !secret alarm_code
+
 esp32:
   board: esp-wrover-kit
   framework:
@@ -30,14 +33,19 @@ i2c:
   sda: GPIO14
   scl: GPIO04
   scan: true
+  frequency: 500kHz
 
 mcp23017:
   - id: 'mcp23017_hub'
     address: 0x20
+  - id: 'mcp23017_hub_1'
+    address: 0x24
 
+globals: !include globals.yaml
 output: !include outputs.yaml
 switch: !include switches.yaml
 alarm_control_panel: !include alarm.yaml
 script: !include_dir_merge_list scripts/
 binary_sensor: !include_dir_merge_list binary_sensors/
 display: !include display.yaml
+matrix_keypad: !include keypad.yaml

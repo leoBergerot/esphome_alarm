@@ -1,0 +1,18 @@
+# scripts/reset_display_state.yaml
+
+- id: reset_display_state
+  mode: restart
+  then:
+    - delay: 10s
+    - lambda: |-
+        auto state = id(home_alarm).get_state();
+        if (state == alarm_control_panel::ACP_STATE_DISARMED)
+          id(update_lcd_display).execute("Desactivee");
+        else if (state == alarm_control_panel::ACP_STATE_ARMED_AWAY)
+          id(update_lcd_display).execute("Mode absent");
+        else if (state == alarm_control_panel::ACP_STATE_ARMED_NIGHT)
+          id(update_lcd_display).execute("Mode nuit");
+        else if (state == alarm_control_panel::ACP_STATE_ARMING)
+          id(update_lcd_display).execute("Armement...");
+        else if (state == alarm_control_panel::ACP_STATE_TRIGGERED)
+          id(update_lcd_display).execute("Detection");

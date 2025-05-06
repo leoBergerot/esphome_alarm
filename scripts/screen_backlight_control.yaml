@@ -1,8 +1,12 @@
 - id: turn_on_screen
   then:
     - lambda: |-
+        if (id(lcd_screen).is_failed()) {
+          ESP_LOGW("alarm", "No LCD screen");
+          return;
+        }
         id(lcd_screen).backlight();
-    - script.execute: screen_sleep_timer
+        id(screen_sleep_timer).execute();
 
 - id: screen_sleep_timer
   mode: restart

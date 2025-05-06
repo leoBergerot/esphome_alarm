@@ -1,0 +1,36 @@
+# scripts/lcd_scroll_line.yaml
+
+- id: lcd_scroll_line
+  mode: restart
+  parameters:
+    line0: string
+    line1: string
+  then:
+    - lambda: |-
+        if (id(lcd_screen).is_failed()) {
+          ESP_LOGW("alarm", "No LCD screen");
+          return;
+        }
+        const int width = 16;
+        std::string full = line1 + "                ";
+        id(lcd_screen).clear();
+        id(lcd_screen).print(0, 0, line0.substr(0, width).c_str());
+        id(lcd_screen).display();
+    - repeat:
+        count: 40
+        then:
+          - lambda: |-
+              if (id(lcd_screen).is_failed()) {
+                ESP_LOGW("alarm", "No LCD screen");
+                return;
+              }
+              const int width = 16;
+              static int offset = 0;
+              std::string full = line1 + "                ";
+              id(lcd_screen).print(0, 1, full.substr(offset, width).c_str());
+              id(lcd_screen).display();
+              offset++;
+              if (offset > full.length() - width) {
+                offset = 0;
+              }
+          - delay: 600ms
