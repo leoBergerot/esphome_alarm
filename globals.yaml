@@ -1,11 +1,13 @@
 # globals.yaml
 
+# keypad
 - id: keypad_buffer
   type: std::string
   restore_value: no
   initial_value: ""
 
 
+# update display
 - id: scroll_active
   type: bool
   restore_value: no
@@ -14,3 +16,10 @@
 - id: offset
   type: int
   initial_value: "0"
+# end update display
+
+# during arming
+- id: opened_state 
+  type: bool
+  restore_value: no
+  initial_value: "false"

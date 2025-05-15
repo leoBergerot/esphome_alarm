@@ -19,6 +19,10 @@ This is a work-in-progress ESPHome-based alarm system, designed to be:
 - Alarm logic embedded in ESP32
 - LCD 1602 I²C display (status messages, code entry)
 - Matrix keypad (arming/disarming via physical code)
+- Automatic screen wake-up on keypress  
+- Code validation and mode switching via keypad  
+- Scrollable text on the LCD when the message is too long
+- When arming, if any windows are open, a warning is shown on the LCD screen (push notifications also sent if Home Assistant is available)  
 
 ## Usage
 
@@ -79,7 +83,6 @@ The matrix keypad allows local control of the alarm system using a 4-digit code:
 | `B` | Arm in "Night" mode       |
 | `C` | Disarm the alarm          |
 | `*` | Delete last entered digit |
-| `#` | Confirm code (optional)   |
 
 ### Example:
 To arm the system in *Away* mode:
@@ -107,9 +110,12 @@ You **must disarm first** before switching between *Away* and *Night* modes.
 - Home Assistant (optional)
 
 ## Roadmap
-- When arming, if any windows are open, a warning is shown on the LCD screen. Currently, only push notifications (Home assistant required) are implemented for this alert.
-- Power loss & tamper alerts
-- Battery backup integration
+- Clear the entire code when pressing #
+- Change or add a password
+- Power loss & tamper alerts  
+- Battery backup integration  
+- Wiring diagram
+- Wireless keyboard/screen ?
 
 ## Status
 

@@ -29,12 +29,12 @@
 
   on_arming:
     then:
-      - script.execute: turn_on_screen
-      - script.execute: check_opened
-      - script.execute:
-          id: lcd_scroll_line
-          line0: "Etat alarme:"
-          line1: "Armement..."
+      - lambda: |-
+          id(turn_on_screen).execute();
+          id(check_opened).execute();
+          if (!id(opened_state)) {
+            id(lcd_scroll_line).execute("Etat alarme:", "Armement...");
+          }
 
   on_triggered:
     then:

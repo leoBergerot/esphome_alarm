@@ -1,7 +1,7 @@
 # binary_sensors/windows.yaml
 
 - platform: gpio
-  name: "Fenêtre chambre"
+  name: "Fenetre chambre"
   id: room_window
   device_class: door
   pin:
