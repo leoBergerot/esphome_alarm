@@ -5,14 +5,20 @@
   then:
     - delay: 10s
     - lambda: |-
+        id(get_display_state).execute();
+
+- id: get_display_state
+  mode: restart
+  then:
+    - lambda: |-
         auto state = id(home_alarm).get_state();
         if (state == alarm_control_panel::ACP_STATE_DISARMED)
-          id(update_lcd_display).execute("Desactivee");
+          id(lcd_scroll_line).execute("Etat alarme:", "Desactivee");
         else if (state == alarm_control_panel::ACP_STATE_ARMED_AWAY)
-          id(update_lcd_display).execute("Mode absent");
+          id(lcd_scroll_line).execute("Etat alarme:", "Mode absent");
         else if (state == alarm_control_panel::ACP_STATE_ARMED_NIGHT)
-          id(update_lcd_display).execute("Mode nuit");
+          id(lcd_scroll_line).execute("Etat alarme:", "Mode nuit");
         else if (state == alarm_control_panel::ACP_STATE_ARMING)
-          id(update_lcd_display).execute("Armement...");
+          id(lcd_scroll_line).execute("Etat alarme:", "Armement...");
         else if (state == alarm_control_panel::ACP_STATE_TRIGGERED)
-          id(update_lcd_display).execute("Detection");
+          id(lcd_scroll_line).execute("Etat alarme:", "Detection");

@@ -35,16 +35,12 @@
           static std::string input = "";
           char key = x;
 
-          auto show_message = [](const std::string &line1, const std::string &line2) {
+          auto show_message = [](const std::string &line0, const std::string &line1) {
             if (id(lcd_screen).is_failed()) {
               ESP_LOGW("alarm", "No LCD screen");
               return;
             }
-            id(lcd_scroll_line).stop();
-            id(lcd_screen).clear();
-            id(lcd_screen).print(0, 0, line1.c_str());
-            id(lcd_screen).print(0, 1, line2.c_str());
-            id(lcd_screen).display();
+            id(lcd_scroll_line).execute(line0.c_str(), line1.c_str());
           };
 
           if (key >= '0' && key <= '9') {

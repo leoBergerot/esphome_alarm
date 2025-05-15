@@ -15,31 +15,35 @@
     then:
       - script.execute: turn_on_screen
       - script.execute:
-          id: update_lcd_display
-          title: "Mode absent"
+          id: lcd_scroll_line
+          line0: "Etat alarme:"
+          line1: "Mode absent"
 
   on_armed_night:
     then:
       - script.execute: turn_on_screen
       - script.execute:
-          id: update_lcd_display
-          title: "Mode nuit"
+          id: lcd_scroll_line
+          line0: "Etat alarme:"
+          line1: "Mode nuit"
 
   on_arming:
     then:
       - script.execute: turn_on_screen
       - script.execute: check_opened
       - script.execute:
-          id: update_lcd_display
-          title: "Armement..."
+          id: lcd_scroll_line
+          line0: "Etat alarme:"
+          line1: "Armement..."
 
   on_triggered:
     then:
       - switch.turn_off: siren_alarme
       - script.execute: turn_on_screen
       - script.execute:
-          id: update_lcd_display
-          title: "Detection"
+          id: lcd_scroll_line
+          line0: "Etat alarme:"
+          line1: "Detection Detection Detection Detection"
       - script.execute:
           id: send_notification_push
           titre: "🚨 Alarme TRIGGERED"
@@ -50,8 +54,9 @@
       - switch.turn_on: siren_alarme
       - script.execute: turn_on_screen
       - script.execute:
-          id: update_lcd_display
-          title: "Desactivee"
+          id: lcd_scroll_line
+          line0: "Etat alarme:"
+          line1: "Desactivee"
 
   # define zone and trigger mode        
   binary_sensors:

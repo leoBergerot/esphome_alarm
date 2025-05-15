@@ -4,3 +4,13 @@
   type: std::string
   restore_value: no
   initial_value: ""
+
+
+- id: scroll_active
+  type: bool
+  restore_value: no
+  initial_value: "false"
+
+- id: offset
+  type: int
+  initial_value: "0"

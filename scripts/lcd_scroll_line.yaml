@@ -7,30 +7,64 @@
     line1: string
   then:
     - lambda: |-
+        id(offset) = 0;  // Reset offset at each start
         if (id(lcd_screen).is_failed()) {
           ESP_LOGW("alarm", "No LCD screen");
           return;
         }
+
+        // disable scrolling
+        id(stop_scroll).execute();
+
         const int width = 16;
-        std::string full = line1 + "                ";
-        id(lcd_screen).clear();
+        int line1_length = line1.length();
+
+        // Display the first line (static)
         id(lcd_screen).print(0, 0, line0.substr(0, width).c_str());
         id(lcd_screen).display();
-    - repeat:
-        count: 40
+
+        // If the second line is short, display statically
+        if (line1_length <= width) {
+          id(lcd_screen).print(0, 1, line1.c_str());
+          id(lcd_screen).display();
+          return;
+        } else {
+          // Activate scrolling
+          id(scroll_active) = true;
+        } 
+
+    - while:
+        condition: 
+          lambda: |-
+            return id(scroll_active) == true;
         then:
           - lambda: |-
-              if (id(lcd_screen).is_failed()) {
-                ESP_LOGW("alarm", "No LCD screen");
+              if (!id(scroll_active)) {
+                ESP_LOGW("alarm", "Scrolling stopped");
                 return;
               }
+
               const int width = 16;
-              static int offset = 0;
-              std::string full = line1 + "                ";
-              id(lcd_screen).print(0, 1, full.substr(offset, width).c_str());
+
+              // Create scrolling text with padding for continuity
+              std::string padded = line1 + "    " + line1.substr(0, width - 1);
+
+              // Display the scrolling text
+              id(lcd_screen).print(0, 1, padded.substr(id(offset), width).c_str());
               id(lcd_screen).display();
-              offset++;
-              if (offset > full.length() - width) {
-                offset = 0;
-              }
-          - delay: 300ms
+
+              // Update the offset for the next iteration
+              id(offset) = (id(offset) + 1) % (line1.length() + 1);
+
+          - delay: 400ms
+
+# Script to stop scrolling
+- id: stop_scroll
+  mode: restart
+  then:
+    - lambda: |-
+        ESP_LOGW("alarm", "Stopping LCD scroll");
+        id(scroll_active) = false;
+        // Clear the display when stopping
+        id(lcd_screen).clear();
+        id(lcd_screen).display();

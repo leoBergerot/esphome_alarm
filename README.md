@@ -45,7 +45,7 @@ scripts/
   ├── check.yaml            # Check opened zones before arming
   ├── notifications.yaml    # Persistent & push notifications
   ├── trigger.yaml          # Trigger logic for alarm modes
-  └── update_lcd_display.yaml # Helper script to update display
+  └── lcd_scroll_line.yaml # Helper script to update display
 binary_sensors/
   ├── pir.yaml              # Motion and sabotage sensors
   └── windows.yaml          # Window contact sensors

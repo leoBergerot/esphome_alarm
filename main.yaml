@@ -7,8 +7,7 @@ esphome:
       - script.execute: turn_on_screen
       - delay: 1s
       - script.execute:
-          id: update_lcd_display
-          title: "Desactivee"
+          id: get_display_state
 
 substitutions:
   alarm_code: !secret alarm_code
