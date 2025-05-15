@@ -10,7 +10,3 @@
     mode:
       input: true
       pullup: true
-  on_press:
-    then:
-      - script.execute: check_trigger_alarme_away
-      - script.execute: check_trigger_alarme_night

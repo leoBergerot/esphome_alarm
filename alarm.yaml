@@ -7,7 +7,10 @@
     - !secret alarm_code
   arming_away_time: 5s
   arming_night_time: 5s
+  pending_time: 30s
+  trigger_time: 5min
 
+  # events
   on_armed_away:
     then:
       - script.execute: turn_on_screen
@@ -49,3 +52,13 @@
       - script.execute:
           id: update_lcd_display
           title: "Desactivee"
+
+  # define zone and trigger mode        
+  binary_sensors:
+    - input: anti_tamper_loop
+      trigger_mode: instant
+    - input: room_pir
+      trigger_mode: delayed
+      bypass_armed_night: true
+    - input: room_window
+      trigger_mode: instant

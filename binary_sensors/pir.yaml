@@ -1,7 +1,8 @@
 # binary_sensors/pir.yaml
 
 - platform: gpio
-  name: "PIR chambre"
+  id: room_pir
+  name: "Detecteur de mouvement chambre"
   device_class: motion
   pin:
     mcp23xxx: mcp23017_hub
@@ -9,6 +10,4 @@
     mode:
       input: true
       pullup: true
-  on_press:
-    then:
-      - script.execute: check_trigger_alarme_away_30s
+

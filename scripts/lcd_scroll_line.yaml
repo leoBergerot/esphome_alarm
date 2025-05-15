@@ -33,4 +33,4 @@
               if (offset > full.length() - width) {
                 offset = 0;
               }
-          - delay: 600ms
+          - delay: 300ms

@@ -1,14 +1,11 @@
 # binary_sensors/sabotage.yaml
 
 - platform: gpio
-  name: "Sabotage PIR"
+  id: "anti_tamper_loop"
+  name: "Boucle anti sabotage"
   device_class: safety
   pin:
     number: GPIO2
     mode:
       input: true
       pullup: true
-  on_press:
-    then:
-      - script.execute: check_trigger_alarme_night
-      - script.execute: check_trigger_alarme_away
